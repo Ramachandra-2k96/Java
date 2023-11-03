@@ -4,15 +4,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import Main.Method_Rule3;
 
 public class first {
 	public static char alpha[]=new char[26];
-	
-	
+	public static int man_score = 0,Comp_Score = 0;
+
 	public static void generate_alphabet()
 	{
-		for (int j = 97,i=0; j <= 122; j++,i++) {
+		for (int j = 97,i=0; j < (97+26); j++,i++) {
 			alpha[i]=(char)j;
 		}
 	}
@@ -44,6 +43,7 @@ public class first {
 			System.out.print("YOU : ");
 			Object[] o1=(Object[]) obj.rule3(Used_words); 
 			input = o1[1].toString();
+			man_score += input.length();
 			Boolean isdisqualified =(Boolean) o1[0];
 			Used_words.add(input);
 			
@@ -67,21 +67,33 @@ public class first {
 					}
 					else if(Same_letter_words.get(i).get(0).charAt(0) == last_letter)
 					{
-						System.out.println("Computer : "+Same_letter_words.get(i).get(0)+" with length "+Same_letter_words.get(i).get(0).length()+"\n");
-						Used_words.add(Same_letter_words.get(i).get(0));
-						lastword = Same_letter_words.get(i).remove(0);
+						String max_size_word = Same_letter_words.get(i).get(0);
+						for (int j=0;j<Same_letter_words.get(i).size();j++)
+						{
+							if(Same_letter_words.get(i).get(j).length() > max_size_word.length() && Same_letter_words.get(i).get(j).length() > len1)
+							{
+								max_size_word = Same_letter_words.get(i).get(j);
+							}
+							else if(Same_letter_words.get(i).get(j).length() > max_size_word.length() )
+							{
+								max_size_word = Same_letter_words.get(i).get(j);
+							}
+						}
+						System.out.println("Computer : "+max_size_word+"\n");
+						Used_words.add(max_size_word);
+						lastword = max_size_word;
+						Comp_Score += max_size_word.length();
+						System.out.println("Your score : "+man_score+"\t Computer Score : "+Comp_Score);
 						break;
 					}
 				}
 			}
 			else {
-				System.out.println("You loose");
+				System.out.println("You lose");
 				System.exit(0);
 			}
 		}
 	}	
-
-	
 	
 	
 public static void main(String[] args) throws FileNotFoundException 
@@ -90,18 +102,21 @@ public static void main(String[] args) throws FileNotFoundException
 		List <String>Used_words= new ArrayList<>();
 		List <List <String>>Same_letter_words= new ArrayList<>();
 		String fileinfo ,lastword;
-		File f1 = new File("C:/Users/ramac/Downloads/words.txt");
-		Scanner sc= new Scanner(f1);
-		while(sc.hasNextLine())
-		{
-			fileinfo = sc.nextLine();
-			words.add(fileinfo);
+		
+		File f1 = new File("words.txt");
+		try (Scanner sc = new Scanner(f1)) {
+			while(sc.hasNextLine())
+			{
+				fileinfo = sc.nextLine();
+				words.add(fileinfo);
+			}
 		}
 		generate_alphabet();
 		Same_letter_words = make_group(words,Same_letter_words);
 		lastword = " ";
 		Method_Rule3 obj=new Method_Rule3(); 
 		Play_the_game(Used_words,Same_letter_words,obj,lastword);
+		
 	}
 }
 
