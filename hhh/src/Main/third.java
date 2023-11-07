@@ -7,67 +7,57 @@ import java.util.List;
 import java.util.Scanner;
 
 public class third {
-	public static int j=0,scount=0,lcount=0;
-	public static void Servivors(int scount,List<String> name,List<Integer> age,List<String> gender,List<Boolean> has_survived)
+	static List<String> male = new ArrayList<>();
+	static List<String> female = new ArrayList<>();
+	static List<String> children = new ArrayList<>();
+	public static void Survivors(List<String> name,List<Integer> age,List<String> gender,List<Boolean> has_survived)
 	{
-		System.out.println(" There are total "+scount+" survivers");
-		System.out.println(" The survivers are :\n");
-		System.out.println(" Childrens age<10 :\n");
 		for(int i=0;i<name.size();i++)
 		{
 			if(has_survived.get(i)&& age.get(i)<10)
 			{
-				System.out.println(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
+				children.add(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
 			}
 		}
-		System.out.println("\n Womens :\n");
 		for(int i=0;i<name.size();i++)
 		{
 			if(has_survived.get(i)&&gender.get(i).equals("female")&&age.get(i)>=10)
 			{
-				System.out.println(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
+				female.add(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
 			}
 		}
-		System.out.println("\n Mens :\n");
 		for(int i=0;i<name.size();i++)
 		{
 			if(has_survived.get(i)&&gender.get(i).equals("male")&&age.get(i)>=10)
 			{
-				System.out.println(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
+				male.add(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
 			}	
 		}
 	}
-	
-	
-	public static void Non_Servivors(int lcount,List<String> name,List<Integer> age,List<String> gender,List<Boolean> has_survived)
+		
+	public static void Non_Survivors(List<String> name,List<Integer> age,List<String> gender,List<Boolean> has_survived)
 	{
-		System.out.println(" There are total "+lcount+" Loss ");
-		System.out.println(" The Non-survivers are :\n");
-		System.out.println(" Childrens age<10 :\n");
 		for(int i=0;i<name.size();i++)
 		{
-			if(has_survived.get(i)&& age.get(i)<10)
+			if(!has_survived.get(i)&& age.get(i)<10)
 			{
-				System.out.println(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
+				children.add(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
 			}
 			
 		}
-		System.out.println(" Womens :\n");
 		for(int i=0;i<name.size();i++)
 		{
-			if(has_survived.get(i)&&gender.get(i).equals("female")&& age.get(i)>=10)
+			if(!has_survived.get(i)&&gender.get(i).equals("female")&& age.get(i)>=10)
 			{
-				System.out.println(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
+				female.add(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
 			}
 		}
-		System.out.println(" Mens :\n");
 		for(int i=0;i<name.size();i++)
 		{
-			if(has_survived.get(i)&&gender.get(i).equals("male")&& age.get(i)>=10)
+			if(!has_survived.get(i)&&gender.get(i).equals("male")&& age.get(i)>=10)
 			{
-				System.out.println(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
+				male.add(name.get(i) +"\t"+ String.valueOf(age.get(i))+"\t"+gender.get(i));
 			}
-			
 		}
 	}
 	
@@ -75,7 +65,7 @@ public class third {
 	{
 		String list1[] ;
 		Scanner sc= new Scanner(f1);
-		System.out.println(sc.nextLine());
+		sc.nextLine();
 		while (sc.hasNextLine()) 
 		{
 	        list1 = sc.nextLine().split(",");
@@ -89,15 +79,10 @@ public class third {
 	        }
 	        gender.add(list1[5]);
 	        has_survived.add("1".equals(list1[1]));
-	        if(has_survived.get(j))
-	        {
-	        	scount++;
-	        }else {
-	        	lcount++;
-	        }
-	        j++;
+	        
 		}
 	}
+	
 	public static void main(String args[]) throws FileNotFoundException{
 		File f1= new File("titanic.csv");
 		List<String> name = new ArrayList<>();
@@ -105,8 +90,16 @@ public class third {
 		List<String> gender = new ArrayList<>();
 		List<Boolean> has_survived = new ArrayList<>();
 		
+		
 		file_set_up(f1,name,age,has_survived,gender);
-		Servivors(scount,name,age,gender,has_survived);
-		Non_Servivors(lcount,name,age,gender,has_survived);
+		Survivors(name,age,gender,has_survived);
+		System.out.println("Total Survivors : "+(male.size()+female.size()+children.size()));
+		System.out.println("Childrens :"+children.size()+"\nMale :"+male.size()+"\nFemale : "+female.size());
+		male.clear();
+		female.clear();
+		children.clear();
+		Non_Survivors(name,age,gender,has_survived);
+		System.out.println("\nTotal Non-Survivors : "+(male.size()+female.size()+children.size()));
+		System.out.println("Childrens :"+children.size()+"\nMale :"+male.size()+"\nFemale : "+female.size());
 	}
 }
