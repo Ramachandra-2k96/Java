@@ -1,0 +1,4 @@
+Capitals,What is the capital of 
+currency,What is the currency of 
+film,Who is the hero in the film 
+sports,Which sport is associated with 
