@@ -52,24 +52,34 @@ public class Quiz_demo {
 		s2="?";
 		Scanner sc= new Scanner(f);
 		Scanner sc1= new Scanner(System.in);
-		List<Question> myList = new ArrayList<>();
+		List<Question>[] myList = new ArrayList[2];
+		myList[0]= new ArrayList<>();
+		myList[1]= new ArrayList<>();
 		sc.nextLine();
 		while(sc.hasNextLine())
 		{
 			words =sc.nextLine().split(",");
-			myList.add(new Question(words[0],words[1]));
+			myList[0].add(new Question(words[0],words[1]));
 		}
-		Collections.shuffle(myList);
+		Collections.shuffle(myList[0]);
 		for(i=0;i<3;i++)
 		{
-			System.out.print(s1+myList.get(i).get()[0]+s2);
+			System.out.print(s1+myList[0].get(i).get()[0]+s2);
 			input = sc1.nextLine();
-			if(myList.get(i).get()[1].equalsIgnoreCase(input))
+			if(myList[0].get(i).get()[1].equalsIgnoreCase(input))
 			{
 				total=total+mark;
 			}
+			else
+			{
+				myList[1].add(new Question(myList[0].get(i).get()[0],myList[0].get(i).get()[1]));
+			}
 		}
 		System.out.println("\n\nYour score : "+total+"/"+i*mark);
+		for(Question a :myList[1])
+		{
+			System.out.println(a.get()[0]+" : "+a.get()[1]);
+		}
 	}
 	
 	public static void main(String[] args) throws FileNotFoundException {
@@ -92,18 +102,7 @@ public class Quiz_demo {
 		}
 		choice =sc.nextInt();
 		System.out.println(" You have selected "+files.get(choice-1).get()[0]);
-		switch(choice)
-		{
-			case 1:
-				start_Quiz("Quiz_"+files.get(choice-1).get()[0]+".csv",limit,files.get(choice-1).get()[1]);break;
-			case 2:
-				start_Quiz("Quiz_"+files.get(choice-1).get()[0]+".csv",limit,files.get(choice-1).get()[1]);break;
-			case 3:
-				start_Quiz("Quiz_"+files.get(choice-1).get()[0]+".csv",limit,files.get(choice-1).get()[1]);break;
-			case 4:
-				start_Quiz("Quiz_"+files.get(choice-1).get()[0]+".csv",limit,files.get(choice-1).get()[1]);break;
-			default:System.out.println(" Invalid choice ");
-		}
+		start_Quiz("Quiz_"+files.get(choice-1).get()[0]+".csv",limit,files.get(choice-1).get()[1]);
 	}
 
 }
